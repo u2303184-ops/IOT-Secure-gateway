@@ -1,13 +1,24 @@
+from flask import Flask, request, jsonify
 import requests
 
-print("\nAttacker intercepting traffic...\n")
+app = Flask(__name__)
 
-url = "http://localhost:6000/receive"
+CLOUD_URL = "http://localhost:6000/receive"
 
-payload = {
-    "data": "gAAAAABfakeEncryptedData123456",
-    "hash": "123fakehash"
-}
+@app.route('/intercept', methods=['POST'])
+def intercept():
 
-print("Captured Encrypted Packet:")
-print(payload)
+    data = request.json
+
+    print("\n[INTERCEPTOR ACTIVE]")
+    print("Captured Encrypted Packet:")
+    print("Encrypted Data:", data['data'])
+    print("Hash:", data['hash'])
+
+    # Forward data to actual cloud
+    response = requests.post(CLOUD_URL, json=data)
+
+    return jsonify({"status": "Forwarded to cloud"})
+
+if __name__ == '__main__':
+    app.run(port=7000)

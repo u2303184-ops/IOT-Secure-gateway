@@ -11,7 +11,7 @@ cipher = Fernet(key)
 
 print("Gateway AES Key:", key)
 
-CLOUD_URL = "http://localhost:6000/receive"
+CLOUD_URL = "http://localhost:7000/intercept"
 
 @app.route('/gateway', methods=['POST'])
 def gateway():
